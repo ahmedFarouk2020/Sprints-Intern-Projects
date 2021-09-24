@@ -1,0 +1,788 @@
+
+SPI_comm_slave.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000036c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          000000ff  00800060  00800060  000003e0  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  000003e0  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 000000e8  00000000  00000000  00000410  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   000009b3  00000000  00000000  000004f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000003da  00000000  00000000  00000eab  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   0000032b  00000000  00000000  00001285  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  000001c4  00000000  00000000  000015b0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000533  00000000  00000000  00001774  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000a94  00000000  00000000  00001ca7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 000000a8  00000000  00000000  0000273b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	21 e0       	ldi	r18, 0x01	; 1
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	af 35       	cpi	r26, 0x5F	; 95
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 31 01 	call	0x262	; 0x262 <main>
+  74:	0c 94 b4 01 	jmp	0x368	; 0x368 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <DIO_setPinDirection>:
+		case GPIOC:
+			if (pin_number < 8) 
+				{
+					return GET_BIT(PORTC_PIN, pin_number); // no errors
+				}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+  7c:	81 30       	cpi	r24, 0x01	; 1
+  7e:	c9 f0       	breq	.+50     	; 0xb2 <DIO_setPinDirection+0x36>
+		case GPIOD:
+		if (pin_number < 8) 
+				{
+					return GET_BIT(PORTD_PIN, pin_number); // no errors
+				}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+  80:	28 f0       	brcs	.+10     	; 0x8c <DIO_setPinDirection+0x10>
+
+	default: return INVALID_PORT_ID; // GPIO Id isn't defined
+	}
+}
+  82:	82 30       	cpi	r24, 0x02	; 2
+#include "DIO_private.h"
+#include "DIO_config.h"
+
+sint8_t DIO_setPinDirection(uint8_t GPIO, uint8_t pin_number, uint8_t direction)
+{
+	switch (GPIO)
+  84:	39 f1       	breq	.+78     	; 0xd4 <DIO_setPinDirection+0x58>
+  86:	83 30       	cpi	r24, 0x03	; 3
+  88:	b1 f1       	breq	.+108    	; 0xf6 <DIO_setPinDirection+0x7a>
+  8a:	46 c0       	rjmp	.+140    	; 0x118 <DIO_setPinDirection+0x9c>
+	{
+		case GPIOA:
+			if (pin_number < 8) 
+  8c:	68 30       	cpi	r22, 0x08	; 8
+  8e:	08 f0       	brcs	.+2      	; 0x92 <DIO_setPinDirection+0x16>
+  90:	45 c0       	rjmp	.+138    	; 0x11c <DIO_setPinDirection+0xa0>
+			{
+				if (direction <= 1)
+  92:	42 30       	cpi	r20, 0x02	; 2
+  94:	08 f0       	brcs	.+2      	; 0x98 <DIO_setPinDirection+0x1c>
+  96:	44 c0       	rjmp	.+136    	; 0x120 <DIO_setPinDirection+0xa4>
+				{
+					PORTA_DDR |= (direction<< pin_number);
+  98:	8a b3       	in	r24, 0x1a	; 26
+  9a:	50 e0       	ldi	r21, 0x00	; 0
+  9c:	9a 01       	movw	r18, r20
+  9e:	02 c0       	rjmp	.+4      	; 0xa4 <DIO_setPinDirection+0x28>
+  a0:	22 0f       	add	r18, r18
+  a2:	33 1f       	adc	r19, r19
+  a4:	6a 95       	dec	r22
+  a6:	e2 f7       	brpl	.-8      	; 0xa0 <DIO_setPinDirection+0x24>
+  a8:	b9 01       	movw	r22, r18
+  aa:	68 2b       	or	r22, r24
+  ac:	6a bb       	out	0x1a, r22	; 26
+					return NO_ERRORS; // no errors
+  ae:	81 e0       	ldi	r24, 0x01	; 1
+  b0:	08 95       	ret
+				return INVALID_PIN_DIRECTION;
+			}
+		return PIN_NUMBER_OUT_OF_RANGE; 
+		
+		case GPIOB:
+			if (pin_number < 8)
+  b2:	68 30       	cpi	r22, 0x08	; 8
+  b4:	b8 f5       	brcc	.+110    	; 0x124 <DIO_setPinDirection+0xa8>
+			{
+				if (direction <= 1)
+  b6:	42 30       	cpi	r20, 0x02	; 2
+  b8:	b8 f5       	brcc	.+110    	; 0x128 <DIO_setPinDirection+0xac>
+				{
+					PORTB_DDR |= (direction<< pin_number);
+  ba:	87 b3       	in	r24, 0x17	; 23
+  bc:	50 e0       	ldi	r21, 0x00	; 0
+  be:	9a 01       	movw	r18, r20
+  c0:	02 c0       	rjmp	.+4      	; 0xc6 <DIO_setPinDirection+0x4a>
+  c2:	22 0f       	add	r18, r18
+  c4:	33 1f       	adc	r19, r19
+  c6:	6a 95       	dec	r22
+  c8:	e2 f7       	brpl	.-8      	; 0xc2 <DIO_setPinDirection+0x46>
+  ca:	b9 01       	movw	r22, r18
+  cc:	68 2b       	or	r22, r24
+  ce:	67 bb       	out	0x17, r22	; 23
+					return NO_ERRORS; // no errors
+  d0:	81 e0       	ldi	r24, 0x01	; 1
+  d2:	08 95       	ret
+				return INVALID_PIN_DIRECTION;
+			}
+			return PIN_NUMBER_OUT_OF_RANGE; // Error
+		
+		case GPIOC:
+			if (pin_number < 8)
+  d4:	68 30       	cpi	r22, 0x08	; 8
+  d6:	50 f5       	brcc	.+84     	; 0x12c <DIO_setPinDirection+0xb0>
+			{
+				if (direction <= 1)
+  d8:	42 30       	cpi	r20, 0x02	; 2
+  da:	50 f5       	brcc	.+84     	; 0x130 <DIO_setPinDirection+0xb4>
+				{
+					PORTC_DDR |= (direction<< pin_number);
+  dc:	84 b3       	in	r24, 0x14	; 20
+  de:	50 e0       	ldi	r21, 0x00	; 0
+  e0:	9a 01       	movw	r18, r20
+  e2:	02 c0       	rjmp	.+4      	; 0xe8 <DIO_setPinDirection+0x6c>
+  e4:	22 0f       	add	r18, r18
+  e6:	33 1f       	adc	r19, r19
+  e8:	6a 95       	dec	r22
+  ea:	e2 f7       	brpl	.-8      	; 0xe4 <DIO_setPinDirection+0x68>
+  ec:	b9 01       	movw	r22, r18
+  ee:	68 2b       	or	r22, r24
+  f0:	64 bb       	out	0x14, r22	; 20
+					return NO_ERRORS; // no errors
+  f2:	81 e0       	ldi	r24, 0x01	; 1
+  f4:	08 95       	ret
+				return INVALID_PIN_DIRECTION;
+			}
+			return PIN_NUMBER_OUT_OF_RANGE; // Error
+		
+		case GPIOD:
+		if (pin_number < 8)
+  f6:	68 30       	cpi	r22, 0x08	; 8
+  f8:	e8 f4       	brcc	.+58     	; 0x134 <DIO_setPinDirection+0xb8>
+		{
+			if (direction <= 1)
+  fa:	42 30       	cpi	r20, 0x02	; 2
+  fc:	e8 f4       	brcc	.+58     	; 0x138 <DIO_setPinDirection+0xbc>
+			{
+				PORTD_DDR |= (direction<< pin_number);
+  fe:	81 b3       	in	r24, 0x11	; 17
+ 100:	50 e0       	ldi	r21, 0x00	; 0
+ 102:	9a 01       	movw	r18, r20
+ 104:	02 c0       	rjmp	.+4      	; 0x10a <DIO_setPinDirection+0x8e>
+ 106:	22 0f       	add	r18, r18
+ 108:	33 1f       	adc	r19, r19
+ 10a:	6a 95       	dec	r22
+ 10c:	e2 f7       	brpl	.-8      	; 0x106 <DIO_setPinDirection+0x8a>
+ 10e:	b9 01       	movw	r22, r18
+ 110:	68 2b       	or	r22, r24
+ 112:	61 bb       	out	0x11, r22	; 17
+				return NO_ERRORS; // no errors
+ 114:	81 e0       	ldi	r24, 0x01	; 1
+ 116:	08 95       	ret
+			return INVALID_PIN_DIRECTION;
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // pin_number or direction are out of range
+			
+
+	default: return INVALID_PORT_ID; // GPIO Id isn't defined
+ 118:	8d ef       	ldi	r24, 0xFD	; 253
+ 11a:	08 95       	ret
+					PORTA_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+			}
+		return PIN_NUMBER_OUT_OF_RANGE; 
+ 11c:	8e ef       	ldi	r24, 0xFE	; 254
+ 11e:	08 95       	ret
+				if (direction <= 1)
+				{
+					PORTA_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+ 120:	8f ef       	ldi	r24, 0xFF	; 255
+ 122:	08 95       	ret
+					PORTB_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+			}
+			return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 124:	8e ef       	ldi	r24, 0xFE	; 254
+ 126:	08 95       	ret
+				if (direction <= 1)
+				{
+					PORTB_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+ 128:	8f ef       	ldi	r24, 0xFF	; 255
+ 12a:	08 95       	ret
+					PORTC_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+			}
+			return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 12c:	8e ef       	ldi	r24, 0xFE	; 254
+ 12e:	08 95       	ret
+				if (direction <= 1)
+				{
+					PORTC_DDR |= (direction<< pin_number);
+					return NO_ERRORS; // no errors
+				}
+				return INVALID_PIN_DIRECTION;
+ 130:	8f ef       	ldi	r24, 0xFF	; 255
+ 132:	08 95       	ret
+				PORTD_DDR |= (direction<< pin_number);
+				return NO_ERRORS; // no errors
+			}
+			return INVALID_PIN_DIRECTION;
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // pin_number or direction are out of range
+ 134:	8e ef       	ldi	r24, 0xFE	; 254
+ 136:	08 95       	ret
+			if (direction <= 1)
+			{
+				PORTD_DDR |= (direction<< pin_number);
+				return NO_ERRORS; // no errors
+			}
+			return INVALID_PIN_DIRECTION;
+ 138:	8f ef       	ldi	r24, 0xFF	; 255
+		return PIN_NUMBER_OUT_OF_RANGE; // pin_number or direction are out of range
+			
+
+	default: return INVALID_PORT_ID; // GPIO Id isn't defined
+	}
+}
+ 13a:	08 95       	ret
+
+0000013c <DIO_setPinValue>:
+
+
+
+sint8_t DIO_setPinValue(uint8_t GPIO, uint8_t pin_number, uint8_t value)
+{
+	switch (GPIO)
+ 13c:	81 30       	cpi	r24, 0x01	; 1
+ 13e:	41 f1       	breq	.+80     	; 0x190 <DIO_setPinValue+0x54>
+ 140:	38 f0       	brcs	.+14     	; 0x150 <DIO_setPinValue+0x14>
+ 142:	82 30       	cpi	r24, 0x02	; 2
+ 144:	09 f4       	brne	.+2      	; 0x148 <DIO_setPinValue+0xc>
+ 146:	44 c0       	rjmp	.+136    	; 0x1d0 <DIO_setPinValue+0x94>
+ 148:	83 30       	cpi	r24, 0x03	; 3
+ 14a:	09 f4       	brne	.+2      	; 0x14e <DIO_setPinValue+0x12>
+ 14c:	61 c0       	rjmp	.+194    	; 0x210 <DIO_setPinValue+0xd4>
+ 14e:	7f c0       	rjmp	.+254    	; 0x24e <DIO_setPinValue+0x112>
+	{
+		case GPIOA:
+		if (pin_number < 8)
+ 150:	68 30       	cpi	r22, 0x08	; 8
+ 152:	08 f0       	brcs	.+2      	; 0x156 <DIO_setPinValue+0x1a>
+ 154:	7e c0       	rjmp	.+252    	; 0x252 <DIO_setPinValue+0x116>
+		{
+			if (GET_BIT(value, 0) == LOW)
+ 156:	40 fd       	sbrc	r20, 0
+ 158:	0e c0       	rjmp	.+28     	; 0x176 <DIO_setPinValue+0x3a>
+			{
+				CLR_BIT(PORTA_DATA, pin_number);
+ 15a:	2b b3       	in	r18, 0x1b	; 27
+ 15c:	81 e0       	ldi	r24, 0x01	; 1
+ 15e:	90 e0       	ldi	r25, 0x00	; 0
+ 160:	ac 01       	movw	r20, r24
+ 162:	02 c0       	rjmp	.+4      	; 0x168 <DIO_setPinValue+0x2c>
+ 164:	44 0f       	add	r20, r20
+ 166:	55 1f       	adc	r21, r21
+ 168:	6a 95       	dec	r22
+ 16a:	e2 f7       	brpl	.-8      	; 0x164 <DIO_setPinValue+0x28>
+ 16c:	ba 01       	movw	r22, r20
+ 16e:	60 95       	com	r22
+ 170:	62 23       	and	r22, r18
+ 172:	6b bb       	out	0x1b, r22	; 27
+ 174:	08 95       	ret
+			}
+			else
+			{
+				SET_BIT(PORTA_DATA, pin_number);
+ 176:	2b b3       	in	r18, 0x1b	; 27
+ 178:	81 e0       	ldi	r24, 0x01	; 1
+ 17a:	90 e0       	ldi	r25, 0x00	; 0
+ 17c:	ac 01       	movw	r20, r24
+ 17e:	02 c0       	rjmp	.+4      	; 0x184 <DIO_setPinValue+0x48>
+ 180:	44 0f       	add	r20, r20
+ 182:	55 1f       	adc	r21, r21
+ 184:	6a 95       	dec	r22
+ 186:	e2 f7       	brpl	.-8      	; 0x180 <DIO_setPinValue+0x44>
+ 188:	ba 01       	movw	r22, r20
+ 18a:	62 2b       	or	r22, r18
+ 18c:	6b bb       	out	0x1b, r22	; 27
+ 18e:	08 95       	ret
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+
+
+		case GPIOB:
+		if (pin_number < 8)
+ 190:	68 30       	cpi	r22, 0x08	; 8
+ 192:	08 f0       	brcs	.+2      	; 0x196 <DIO_setPinValue+0x5a>
+ 194:	60 c0       	rjmp	.+192    	; 0x256 <DIO_setPinValue+0x11a>
+		{
+			if (GET_BIT(value, 0) == LOW)
+ 196:	40 fd       	sbrc	r20, 0
+ 198:	0e c0       	rjmp	.+28     	; 0x1b6 <DIO_setPinValue+0x7a>
+			{
+				CLR_BIT(PORTB_DATA, pin_number);
+ 19a:	28 b3       	in	r18, 0x18	; 24
+ 19c:	81 e0       	ldi	r24, 0x01	; 1
+ 19e:	90 e0       	ldi	r25, 0x00	; 0
+ 1a0:	ac 01       	movw	r20, r24
+ 1a2:	02 c0       	rjmp	.+4      	; 0x1a8 <DIO_setPinValue+0x6c>
+ 1a4:	44 0f       	add	r20, r20
+ 1a6:	55 1f       	adc	r21, r21
+ 1a8:	6a 95       	dec	r22
+ 1aa:	e2 f7       	brpl	.-8      	; 0x1a4 <DIO_setPinValue+0x68>
+ 1ac:	ba 01       	movw	r22, r20
+ 1ae:	60 95       	com	r22
+ 1b0:	62 23       	and	r22, r18
+ 1b2:	68 bb       	out	0x18, r22	; 24
+ 1b4:	08 95       	ret
+			}
+			else
+			{
+				SET_BIT(PORTB_DATA, pin_number);
+ 1b6:	28 b3       	in	r18, 0x18	; 24
+ 1b8:	81 e0       	ldi	r24, 0x01	; 1
+ 1ba:	90 e0       	ldi	r25, 0x00	; 0
+ 1bc:	ac 01       	movw	r20, r24
+ 1be:	02 c0       	rjmp	.+4      	; 0x1c4 <DIO_setPinValue+0x88>
+ 1c0:	44 0f       	add	r20, r20
+ 1c2:	55 1f       	adc	r21, r21
+ 1c4:	6a 95       	dec	r22
+ 1c6:	e2 f7       	brpl	.-8      	; 0x1c0 <DIO_setPinValue+0x84>
+ 1c8:	ba 01       	movw	r22, r20
+ 1ca:	62 2b       	or	r22, r18
+ 1cc:	68 bb       	out	0x18, r22	; 24
+ 1ce:	08 95       	ret
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+
+		
+		case GPIOC:
+		if (pin_number < 8)
+ 1d0:	68 30       	cpi	r22, 0x08	; 8
+ 1d2:	08 f0       	brcs	.+2      	; 0x1d6 <DIO_setPinValue+0x9a>
+ 1d4:	42 c0       	rjmp	.+132    	; 0x25a <DIO_setPinValue+0x11e>
+		{
+			if (GET_BIT(value, 0) == LOW)
+ 1d6:	40 fd       	sbrc	r20, 0
+ 1d8:	0e c0       	rjmp	.+28     	; 0x1f6 <DIO_setPinValue+0xba>
+			{
+				CLR_BIT(PORTC_DATA, pin_number);
+ 1da:	25 b3       	in	r18, 0x15	; 21
+ 1dc:	81 e0       	ldi	r24, 0x01	; 1
+ 1de:	90 e0       	ldi	r25, 0x00	; 0
+ 1e0:	ac 01       	movw	r20, r24
+ 1e2:	02 c0       	rjmp	.+4      	; 0x1e8 <DIO_setPinValue+0xac>
+ 1e4:	44 0f       	add	r20, r20
+ 1e6:	55 1f       	adc	r21, r21
+ 1e8:	6a 95       	dec	r22
+ 1ea:	e2 f7       	brpl	.-8      	; 0x1e4 <DIO_setPinValue+0xa8>
+ 1ec:	ba 01       	movw	r22, r20
+ 1ee:	60 95       	com	r22
+ 1f0:	62 23       	and	r22, r18
+ 1f2:	65 bb       	out	0x15, r22	; 21
+ 1f4:	08 95       	ret
+			}
+			else
+			{
+				SET_BIT(PORTC_DATA, pin_number);
+ 1f6:	25 b3       	in	r18, 0x15	; 21
+ 1f8:	81 e0       	ldi	r24, 0x01	; 1
+ 1fa:	90 e0       	ldi	r25, 0x00	; 0
+ 1fc:	ac 01       	movw	r20, r24
+ 1fe:	02 c0       	rjmp	.+4      	; 0x204 <DIO_setPinValue+0xc8>
+ 200:	44 0f       	add	r20, r20
+ 202:	55 1f       	adc	r21, r21
+ 204:	6a 95       	dec	r22
+ 206:	e2 f7       	brpl	.-8      	; 0x200 <DIO_setPinValue+0xc4>
+ 208:	ba 01       	movw	r22, r20
+ 20a:	62 2b       	or	r22, r18
+ 20c:	65 bb       	out	0x15, r22	; 21
+ 20e:	08 95       	ret
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+
+		
+		case GPIOD:
+		if (pin_number < 8)
+ 210:	68 30       	cpi	r22, 0x08	; 8
+ 212:	28 f5       	brcc	.+74     	; 0x25e <DIO_setPinValue+0x122>
+		{
+			if (GET_BIT(value, 0) == LOW)
+ 214:	40 fd       	sbrc	r20, 0
+ 216:	0e c0       	rjmp	.+28     	; 0x234 <DIO_setPinValue+0xf8>
+			{
+				CLR_BIT(PORTD_DATA, pin_number);
+ 218:	22 b3       	in	r18, 0x12	; 18
+ 21a:	81 e0       	ldi	r24, 0x01	; 1
+ 21c:	90 e0       	ldi	r25, 0x00	; 0
+ 21e:	ac 01       	movw	r20, r24
+ 220:	02 c0       	rjmp	.+4      	; 0x226 <DIO_setPinValue+0xea>
+ 222:	44 0f       	add	r20, r20
+ 224:	55 1f       	adc	r21, r21
+ 226:	6a 95       	dec	r22
+ 228:	e2 f7       	brpl	.-8      	; 0x222 <DIO_setPinValue+0xe6>
+ 22a:	ba 01       	movw	r22, r20
+ 22c:	60 95       	com	r22
+ 22e:	62 23       	and	r22, r18
+ 230:	62 bb       	out	0x12, r22	; 18
+ 232:	08 95       	ret
+			}
+			else
+			{
+				SET_BIT(PORTD_DATA, pin_number);
+ 234:	22 b3       	in	r18, 0x12	; 18
+ 236:	81 e0       	ldi	r24, 0x01	; 1
+ 238:	90 e0       	ldi	r25, 0x00	; 0
+ 23a:	ac 01       	movw	r20, r24
+ 23c:	02 c0       	rjmp	.+4      	; 0x242 <DIO_setPinValue+0x106>
+ 23e:	44 0f       	add	r20, r20
+ 240:	55 1f       	adc	r21, r21
+ 242:	6a 95       	dec	r22
+ 244:	e2 f7       	brpl	.-8      	; 0x23e <DIO_setPinValue+0x102>
+ 246:	ba 01       	movw	r22, r20
+ 248:	62 2b       	or	r22, r18
+ 24a:	62 bb       	out	0x12, r22	; 18
+ 24c:	08 95       	ret
+			return NO_ERRORS; // no errors
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+
+
+		default: return INVALID_PORT_ID; // GPIO Id isn't defined
+ 24e:	8d ef       	ldi	r24, 0xFD	; 253
+ 250:	08 95       	ret
+			{
+				SET_BIT(PORTA_DATA, pin_number);
+			}
+			return NO_ERRORS; // no errors
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 252:	8e ef       	ldi	r24, 0xFE	; 254
+ 254:	08 95       	ret
+			{
+				SET_BIT(PORTB_DATA, pin_number);
+			}
+			return NO_ERRORS; // no errors
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 256:	8e ef       	ldi	r24, 0xFE	; 254
+ 258:	08 95       	ret
+			{
+				SET_BIT(PORTC_DATA, pin_number);
+			}
+			return NO_ERRORS; 
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 25a:	8e ef       	ldi	r24, 0xFE	; 254
+ 25c:	08 95       	ret
+			{
+				SET_BIT(PORTD_DATA, pin_number);
+			}
+			return NO_ERRORS; // no errors
+		}
+		return PIN_NUMBER_OUT_OF_RANGE; // Error
+ 25e:	8e ef       	ldi	r24, 0xFE	; 254
+
+
+		default: return INVALID_PORT_ID; // GPIO Id isn't defined
+	}
+}
+ 260:	08 95       	ret
+
+00000262 <main>:
+#define MAX_SIZE  255
+uint8_t buffer[MAX_SIZE]; // startup code initializes all elements to be zeros
+
+int main(void)
+{
+	SPI_Init();
+ 262:	0e 94 47 01 	call	0x28e	; 0x28e <SPI_Init>
+	UART_Init(BR_9600,_1_stopbit,disabled,Asynchronous,_8_bits,polling);
+ 266:	e1 2c       	mov	r14, r1
+ 268:	06 e0       	ldi	r16, 0x06	; 6
+ 26a:	20 e0       	ldi	r18, 0x00	; 0
+ 26c:	40 e0       	ldi	r20, 0x00	; 0
+ 26e:	60 e0       	ldi	r22, 0x00	; 0
+ 270:	86 e0       	ldi	r24, 0x06	; 6
+ 272:	0e 94 86 01 	call	0x30c	; 0x30c <UART_Init>
+    while(1)
+    {
+		SPI_ReceiveStr(buffer);
+ 276:	80 e6       	ldi	r24, 0x60	; 96
+ 278:	90 e0       	ldi	r25, 0x00	; 0
+ 27a:	0e 94 68 01 	call	0x2d0	; 0x2d0 <SPI_ReceiveStr>
+		UART_SendString(buffer);
+ 27e:	80 e6       	ldi	r24, 0x60	; 96
+ 280:	90 e0       	ldi	r25, 0x00	; 0
+ 282:	0e 94 9f 01 	call	0x33e	; 0x33e <UART_SendString>
+		UART_SendChar('\r');
+ 286:	8d e0       	ldi	r24, 0x0D	; 13
+ 288:	0e 94 9b 01 	call	0x336	; 0x336 <UART_SendChar>
+ 28c:	f4 cf       	rjmp	.-24     	; 0x276 <main+0x14>
+
+0000028e <SPI_Init>:
+
+void SPI_Init(void)
+{
+	/* Configure SPI pins first (MUST) */
+		#if  SPI_MODE == MasterMode 
+			DIO_setPinDirection(MOSI,OUTPUT);
+ 28e:	41 e0       	ldi	r20, 0x01	; 1
+ 290:	65 e0       	ldi	r22, 0x05	; 5
+ 292:	81 e0       	ldi	r24, 0x01	; 1
+ 294:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_setPinDirection>
+			DIO_setPinDirection(SS,OUTPUT);
+ 298:	41 e0       	ldi	r20, 0x01	; 1
+ 29a:	64 e0       	ldi	r22, 0x04	; 4
+ 29c:	81 e0       	ldi	r24, 0x01	; 1
+ 29e:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_setPinDirection>
+			DIO_setPinDirection(CLK,OUTPUT);
+ 2a2:	41 e0       	ldi	r20, 0x01	; 1
+ 2a4:	67 e0       	ldi	r22, 0x07	; 7
+ 2a6:	81 e0       	ldi	r24, 0x01	; 1
+ 2a8:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_setPinDirection>
+			DIO_setPinDirection(MISO,INPUT);
+ 2ac:	40 e0       	ldi	r20, 0x00	; 0
+ 2ae:	66 e0       	ldi	r22, 0x06	; 6
+ 2b0:	81 e0       	ldi	r24, 0x01	; 1
+ 2b2:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_setPinDirection>
+			SS_ENABLE();
+ 2b6:	40 e0       	ldi	r20, 0x00	; 0
+ 2b8:	64 e0       	ldi	r22, 0x04	; 4
+ 2ba:	81 e0       	ldi	r24, 0x01	; 1
+ 2bc:	0e 94 9e 00 	call	0x13c	; 0x13c <DIO_setPinValue>
+			DIO_setPinDirection(SS,INPUT);
+			DIO_setPinDirection(CLK,INPUT);
+			DIO_setPinDirection(MISO,OUTPUT);
+		#endif
+		/* Setup communication options */
+		SPSR = DOUBLE_SPEED;
+ 2c0:	1e b8       	out	0x0e, r1	; 14
+		SPCR = SPI_CLK | SPI_MODE | BIT_ORDER | INTERRUPT_STATE | SCK_MODE | SPI_ENABLE;
+ 2c2:	83 e4       	ldi	r24, 0x43	; 67
+ 2c4:	8d b9       	out	0x0d, r24	; 13
+ 2c6:	08 95       	ret
+
+000002c8 <SPI_ReceiveChar>:
+	SPDR = character;
+	while(GET_BIT(SPSR,7) == 0);
+}
+uint8_t SPI_ReceiveChar(void)
+{
+	while(GET_BIT(SPSR,7) == 0);
+ 2c8:	77 9b       	sbis	0x0e, 7	; 14
+ 2ca:	fe cf       	rjmp	.-4      	; 0x2c8 <SPI_ReceiveChar>
+	return SPDR;
+ 2cc:	8f b1       	in	r24, 0x0f	; 15
+}
+ 2ce:	08 95       	ret
+
+000002d0 <SPI_ReceiveStr>:
+		SPI_sendChar(str[index]);
+		index++;
+	}
+}
+void SPI_ReceiveStr(uint8_t* buffer)
+{
+ 2d0:	ff 92       	push	r15
+ 2d2:	0f 93       	push	r16
+ 2d4:	1f 93       	push	r17
+ 2d6:	cf 93       	push	r28
+ 2d8:	df 93       	push	r29
+ 2da:	ec 01       	movw	r28, r24
+	uint8_t index = 0;
+ 2dc:	f1 2c       	mov	r15, r1
+	do
+	{
+		buffer[index] = SPI_ReceiveChar();
+ 2de:	8e 01       	movw	r16, r28
+ 2e0:	0f 0d       	add	r16, r15
+ 2e2:	11 1d       	adc	r17, r1
+ 2e4:	0e 94 64 01 	call	0x2c8	; 0x2c8 <SPI_ReceiveChar>
+ 2e8:	f8 01       	movw	r30, r16
+ 2ea:	80 83       	st	Z, r24
+		index++;
+ 2ec:	f3 94       	inc	r15
+	} while (buffer[index-1] != '\0');
+ 2ee:	ef 2d       	mov	r30, r15
+ 2f0:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f2:	31 97       	sbiw	r30, 0x01	; 1
+ 2f4:	ec 0f       	add	r30, r28
+ 2f6:	fd 1f       	adc	r31, r29
+ 2f8:	80 81       	ld	r24, Z
+ 2fa:	81 11       	cpse	r24, r1
+ 2fc:	f0 cf       	rjmp	.-32     	; 0x2de <SPI_ReceiveStr+0xe>
+	buffer[index-1] = '\0';
+ 2fe:	10 82       	st	Z, r1
+}
+ 300:	df 91       	pop	r29
+ 302:	cf 91       	pop	r28
+ 304:	1f 91       	pop	r17
+ 306:	0f 91       	pop	r16
+ 308:	ff 90       	pop	r15
+ 30a:	08 95       	ret
+
+0000030c <UART_Init>:
+
+
+
+void UART_Init(EN_baud_rate BR, EN_stopbit_count SB, EN_parity_mode pm, EN_sync_mode s_mode,
+				EN_data_size size, EN_trig_source trig_mode)
+{
+ 30c:	ef 92       	push	r14
+ 30e:	0f 93       	push	r16
+	UCSRA = (1<<1); // when disable this mode, data corruption ocurrs
+ 310:	82 e0       	ldi	r24, 0x02	; 2
+ 312:	8b b9       	out	0x0b, r24	; 11
+	
+	UCSRB = trig_mode ;
+ 314:	ea b8       	out	0x0a, r14	; 10
+	ENABLE_TRANSMITTER();
+ 316:	53 9a       	sbi	0x0a, 3	; 10
+	ENABLE_RECEIVER();
+ 318:	54 9a       	sbi	0x0a, 4	; 10
+	
+	UCSRC = (1<<7);
+ 31a:	80 e8       	ldi	r24, 0x80	; 128
+ 31c:	80 bd       	out	0x20, r24	; 32
+	UCSRC |= ( SB | pm | s_mode | size );
+ 31e:	80 b5       	in	r24, 0x20	; 32
+ 320:	08 2b       	or	r16, r24
+ 322:	20 2b       	or	r18, r16
+ 324:	42 2b       	or	r20, r18
+ 326:	64 2b       	or	r22, r20
+ 328:	60 bd       	out	0x20, r22	; 32
+	
+	/* First 8 bits from the BAUD_PRESCALE inside UBRRL and last 4 bits in UBRRH*/
+	UBRRH = BAUD_PRESCALE>>8;
+ 32a:	10 bc       	out	0x20, r1	; 32
+	UBRRL = BAUD_PRESCALE;
+ 32c:	8c e0       	ldi	r24, 0x0C	; 12
+ 32e:	89 b9       	out	0x09, r24	; 9
+	
+}
+ 330:	0f 91       	pop	r16
+ 332:	ef 90       	pop	r14
+ 334:	08 95       	ret
+
+00000336 <UART_SendChar>:
+
+
+void UART_SendChar(uint8_t character)
+{
+	// wait until UDRE flag is enabled (ready to transmit data)
+	while(!GET_BIT(UCSRA,5));
+ 336:	5d 9b       	sbis	0x0b, 5	; 11
+ 338:	fe cf       	rjmp	.-4      	; 0x336 <UART_SendChar>
+	UDR = character;
+ 33a:	8c b9       	out	0x0c, r24	; 12
+ 33c:	08 95       	ret
+
+0000033e <UART_SendString>:
+}
+
+
+void UART_SendString(uint8_t *data)
+{
+ 33e:	1f 93       	push	r17
+ 340:	cf 93       	push	r28
+ 342:	df 93       	push	r29
+ 344:	ec 01       	movw	r28, r24
+	uint8_t index = 0;
+	while(data[index] != '\0')
+ 346:	88 81       	ld	r24, Y
+ 348:	88 23       	and	r24, r24
+ 34a:	51 f0       	breq	.+20     	; 0x360 <UART_SendString+0x22>
+}
+
+
+void UART_SendString(uint8_t *data)
+{
+	uint8_t index = 0;
+ 34c:	10 e0       	ldi	r17, 0x00	; 0
+	while(data[index] != '\0')
+	{
+		UART_SendChar(data[index]);
+ 34e:	0e 94 9b 01 	call	0x336	; 0x336 <UART_SendChar>
+		index++;
+ 352:	1f 5f       	subi	r17, 0xFF	; 255
+
+
+void UART_SendString(uint8_t *data)
+{
+	uint8_t index = 0;
+	while(data[index] != '\0')
+ 354:	fe 01       	movw	r30, r28
+ 356:	e1 0f       	add	r30, r17
+ 358:	f1 1d       	adc	r31, r1
+ 35a:	80 81       	ld	r24, Z
+ 35c:	81 11       	cpse	r24, r1
+ 35e:	f7 cf       	rjmp	.-18     	; 0x34e <UART_SendString+0x10>
+	{
+		UART_SendChar(data[index]);
+		index++;
+	}
+}
+ 360:	df 91       	pop	r29
+ 362:	cf 91       	pop	r28
+ 364:	1f 91       	pop	r17
+ 366:	08 95       	ret
+
+00000368 <_exit>:
+ 368:	f8 94       	cli
+
+0000036a <__stop_program>:
+ 36a:	ff cf       	rjmp	.-2      	; 0x36a <__stop_program>
