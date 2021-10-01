@@ -14,9 +14,11 @@
 #include "SPI_private.h"
 #include "SPI_config.h"
 
+
+
 void SPI_Init(void)
 {
-	/* Configure SPI Pins first (MUST) */
+	/* Configure SPI pins first (MUST) */
 		#if  SPI_MODE == MasterMode 
 			DIO_setPinDirection(MOSI,OUTPUT);
 			DIO_setPinDirection(SS,OUTPUT);
@@ -29,20 +31,44 @@ void SPI_Init(void)
 			DIO_setPinDirection(CLK,INPUT);
 			DIO_setPinDirection(MISO,OUTPUT);
 		#endif
-		/* setup SPI communication options */
+		/* Setup communication options */
 		SPSR = DOUBLE_SPEED;
 		SPCR = SPI_CLK | SPI_MODE | BIT_ORDER | INTERRUPT_STATE | SCK_MODE | SPI_ENABLE;
 }
 void SPI_sendChar(uint8_t character)
 {
 	SPDR = character;
-	while(GET_BIT(SPSR,7) == 0);
+	while(GET_BIT(SPSR,SPI_FLAG) == 0);
 }
 uint8_t SPI_ReceiveChar(void)
 {
-	while(GET_BIT(SPSR,7) == 0);
+	while(GET_BIT(SPSR,SPI_FLAG) == 0);
 	return SPDR;
 }
-//void SPI_SendStr(uint8_t* str);
-//void SPI_ReceiveChar(uint8_t* buffer);
-//void SPI_Disable(void);
+void SPI_SendStr(uint8_t* str)
+{
+	uint8_t index = 0;
+	while (str[index] != '\0')
+	{
+		SPI_sendChar(str[index]);
+		index++;
+	}
+}
+
+
+
+void SPI_ReceiveStr(uint8_t* buffer)
+{
+	uint8_t index = 0;
+	do
+	{
+		buffer[index] = SPI_ReceiveChar();
+		index++;
+	} while (buffer[index-1] != '\0');
+	buffer[index-1] = '\0';
+}
+
+void SPI_Disable(void)
+{
+	SPCR = SPI_DIS;
+}

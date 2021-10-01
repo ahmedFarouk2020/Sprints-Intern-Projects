@@ -8,7 +8,7 @@
 #ifndef LCD_CONFIG_H_
 #define LCD_CONFIG_H_
 
-//----- ERROR Definations
+//----- ERROR Definations ----------
 #define INVALID_OPERATION_MODE   0
 
 
