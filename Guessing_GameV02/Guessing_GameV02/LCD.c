@@ -15,24 +15,6 @@
 
 #include "Delay_interface.h"
 
-static void LCD_IsBusy(void)
-{
-	LCD_SetOperationMode(RECEIVE_COMMAND);
-	uint8_t BF_state = 0;
-	//Delay_us_independent(30);
-	// get BF and AC
-	LCD_StartOperation();
-	while(1) {
-		//delay
-		Delay_us_independent(30);
-		// check the the last pin 
-		BF_state = DIO_readPinValue(LCD_D7);
-		// if true -> ready to receive data & commands (end the function)
-		if(BF_state == 0) {
-			break;
-		}
-	}
-}
 
 static uint8_t LCD_SetOperationMode(uint8_t mode)
 {
@@ -82,26 +64,15 @@ void LCD_Init(void)
 	DIO_setPinDirection(LCD_D5,OUTPUT);
 	DIO_setPinDirection(LCD_D4,OUTPUT);
 	
-	////-  follow init sequence
-	//LCD_SendCommand(0x02);
-	////LCD_IsBusy();
-	//Delay_ms_independent(1);
-	//LCD_SendCommand(_2LINES_58FORMAT_4BITMODE);
-	////LCD_IsBusy();
-	//Delay_ms_independent(1);
-	//LCD_SendCommand(DISPLAY_ON_CURSOR_ON);
-	//Delay_ms_independent(1);
-	////LCD_IsBusy();
-	//LCD_SendCommand(CLEAR_SCREEN);
 	
 	//-  follow init sequence
-	LCD_SendCommand(0x02);// 4-bit mode
+	LCD_SendCommand(TO_4_BIT_MODE);// 4-bit mode
 	//LCD_IsBusy();
 	Delay_ms_independent(1);
 	LCD_SendCommand(_2LINES_58FORMAT_4BITMODE);
 	//LCD_IsBusy();
 	Delay_ms_independent(1);
-	LCD_SendCommand(DISPLAY_ON_CURSOR_OFF);
+	LCD_SendCommand(DISPLAY_ON_CURSOR_BLINKING);
 	Delay_ms_independent(1);
 	LCD_SendCommand(CURSOR_RIGHT);
 	Delay_ms_independent(1);
@@ -110,28 +81,25 @@ void LCD_Init(void)
 }
 
 
-//void LCD_init(void)
-//{
-	//LCD_DATA_DIR = 0XFF;
-	//LCD_CTRL_DIR = 0X07;
-	//_delay_ms(15);
-	//LCD_sendCommand(TWO_LINE_8_BITS);
-	//LCD_sendCommand(DISPLAY_ON_CURSOR_ON);
-	//LCD_sendCommand(CLEAR_SCREEN);
-	//_delay_ms(2);
-//}
-
 void LCD_SendCommand(uint8_t command)
 {
 	LCD_SetOperationMode(SEND_COMMAND);
-	DIO_SetPortValue(LCD_DATA_BUFFER,command);
+	//DIO_SetPortValue(LCD_DATA_BUFFER,command);----------------------
+	// clear the higher 4-bits 
+	LCD_DATA_BUFFER &= 0x0f; 
+	// store cmd into buffer
+	LCD_DATA_BUFFER |= command & (0xf0); // high first
 	Delay_ms_independent(1);
 	LCD_StartOperation(); // start operation
 	Delay_ms_independent(1);
 	LCD_StopOperation();
 	// shift
 	command = (command<<4);
-	DIO_SetPortValue(LCD_DATA_BUFFER,command);
+	// clear the higher 4-bits 
+	LCD_DATA_BUFFER &= 0x0f; 
+	// store cmd into buffer
+	LCD_DATA_BUFFER |= command & (0xf0);
+	//DIO_SetPortValue(LCD_DATA_BUFFER,command);-------------------------
 	Delay_ms_independent(1);
 	LCD_StartOperation();
 	Delay_ms_independent(1);
@@ -141,13 +109,23 @@ void LCD_SendCommand(uint8_t command)
 void LCD_DisplayCharacter(uint8_t character)
 {
 	LCD_SetOperationMode(SEND_DATA);
-	DIO_SetPortValue(LCD_DATA_BUFFER,character);
+	// clear the higher 4-bits 
+	LCD_DATA_BUFFER &= 0x0f; 
+	// store cmd into buffer
+	LCD_DATA_BUFFER |= character & (0xf0);
+	
+	//DIO_SetPortValue(LCD_DATA_BUFFER,character);
 	Delay_ms_independent(1);
 	LCD_StartOperation();
 	Delay_ms_independent(1);
 	LCD_StopOperation();
 	Delay_ms_independent(1);
-	DIO_SetPortValue(LCD_DATA_BUFFER,(character<<4));
+	
+	// clear the higher 4-bits 
+	LCD_DATA_BUFFER &= 0x0f; 
+	// store cmd into buffer
+	LCD_DATA_BUFFER |= (character<<4) & (0xf0);
+	//DIO_SetPortValue(LCD_DATA_BUFFER,(character<<4));
 	Delay_ms_independent(1);
 	LCD_StartOperation();
 	Delay_ms_independent(1);
@@ -155,15 +133,24 @@ void LCD_DisplayCharacter(uint8_t character)
 
 void LCD_DisplayString(uint8_t * str, uint8_t writing_speed_ms)
 {
-	uint8_t i=0;
-	while(str[i] != 0)
+	LCD_Cursor_Pos = 0;
+	
+	while(str[LCD_Cursor_Pos] != 0)
 	{
-		LCD_DisplayCharacter(str[i]);
+		LCD_DisplayCharacter(str[LCD_Cursor_Pos]);
 		Delay_ms_independent(writing_speed_ms);
-		i++;
-		if (i == 16) // the space of 1st line has been ended
+		LCD_Cursor_Pos++;
+		
+		/* Check Cursor Position */
+		if (LCD_Cursor_Pos == END_OF_LINE1) // the space of 1st line has been ended
 		{
 			LCD_SendCommand(CURSOR_AT_LINE2);
+		}
+		
+		else if(LCD_Cursor_Pos == END_OF_LINE2)
+		{
+			LCD_SendCommand(CLEAR_SCREEN); // return to position 0 
+			LCD_Cursor_Pos = 0;
 		}
 	}
 }

@@ -26,7 +26,7 @@
 
 #define LCD_DATA_BUFFER		GPIOB
 
-//---------- Transmition Mode
+//---- Transmition Mode
 #define SEND_COMMAND	   0
 #define SEND_DATA		   1
 #define RECEIVE_COMMAND	   2
@@ -45,15 +45,47 @@
 #define ENABLE_LINE1                0x80
 #define CURSOR_AT_LINE2             0xC0
 #define RETURN_HOME					0x02
+#define TO_4_BIT_MODE				0x02
 #define _2LINES_58FORMAT_4BITMODE 	0x28
 #define CURSOR_RIGHT				0x06
 #define ACTIVATE_SECOND_LINE		0xC0
 
 
 //------- function prototypes
+
+/****
+ * Description: Init LCD by sending specific commands
+ * args: None
+ * Return: None
+ * EX: LCD_Init();
+ */
 void LCD_Init(void);
+
+
+/****
+ * Description: send command to LCD to perform specific function
+ * args: command  ->  uint8_t
+ * Return: None
+ * EX: LCD_SendCommand(cmd);
+ */
 void LCD_SendCommand(uint8_t command);
+
+
+/****
+ * Description: Display a character on LCD
+ * args: character  ->  uint8_t
+ * Return: None
+ * EX: LCD_DisplayCharacter(character);
+ */
 void LCD_DisplayCharacter(uint8_t character);
+
+
+/****
+ * Description: Display string (a series of characters) on LCD
+ * args: string -> uint8_t* , writing_speed_ms(delay between 2 characters) -> uint8_t
+ * Return: None
+ * EX: LCD_DisplayString(str, 0);
+ */
 void LCD_DisplayString(uint8_t * str, uint8_t writing_speed_ms);
 
 //------ Not implemented (included in the Next Version ISA)
