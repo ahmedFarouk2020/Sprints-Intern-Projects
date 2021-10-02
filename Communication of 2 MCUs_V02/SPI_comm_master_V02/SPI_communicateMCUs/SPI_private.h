@@ -19,6 +19,9 @@
 #define SS_ENABLE()		DIO_setPinValue(SS,LOW)
 #define SS_DISABLE()    DIO_setPinValue(SS,HIGH)
 
+//-------- Flags ---------
+#define SPI_FLAG 7
+
 //------- Config Options ----------
 typedef enum
 {

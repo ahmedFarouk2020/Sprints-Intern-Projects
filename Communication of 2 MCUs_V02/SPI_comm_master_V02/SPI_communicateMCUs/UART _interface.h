@@ -44,34 +44,69 @@ typedef enum{
 	_1_stopbit=0
 }EN_stopbit_count;
 
-
 typedef enum{
-	// in UBRR at 1M clk source (for other clk sources see p.165 tables)
-	BR_2400  = 25, 
-	BR_4800  = 12,
-	BR_9600  = 6,
-	BR_14_4K = 3,
-	BR_19_2K = 2
-}EN_baud_rate;
-
+	ENABLE=1,
+	DISABLE=0
+}EN_Double_Speed;
 
 
 
 //-------- Function Declaration ------------------
 
-void UART_Init(EN_baud_rate BR, EN_stopbit_count SB, EN_parity_mode pm, EN_sync_mode s_mode,
-				EN_data_size size, EN_trig_source trig_mode);
+/*****
+ * Description: Initialization of UART module
+ * Args: (stopbit_number, parity_type, synchronous_or_not, data_size, polling_or_interrupt) -> uint8_t
+ * Return: None
+ * Example: UART_Init(_1_stopbit,even_parity,Asynchronous,_8_bits,polling);
+ */
+void UART_Init(EN_stopbit_count SB, EN_parity_mode pm, EN_sync_mode s_mode,
+				EN_data_size size, EN_trig_source trig_mode, EN_Double_Speed double_speed);
 
 
+/*****
+ * Description: Send string (number of frames) successively
+ * Args: data -> str
+ * Return: None
+ * Example: UART_SendString((uint8_t*)"any string text");
+ */
 void UART_SendString(uint8_t *data);
 
+
+/*****
+ * Description: Send a frame
+ * Args: character -> uint8_t
+ * Return: None
+ * Example: UART_SendChar(frame);
+ */
 void UART_SendChar(uint8_t character);
 
+
+
+/*****
+ * Description: Send a number
+ * Args: number -> uint8_t
+ * Return: None
+ * Example: UART_SendInt(number);
+ */
 void UART_SendInt(uint16_t number);
 
 
+/*****
+ * Description: receive a frame
+ * Args: None
+ * Return: frame -> uint8_t
+ * Example: frame = UART_ReceiveCharSych();
+ */
 uint8_t UART_ReceiveCharSych(void);
 
+
+/*****
+ * Description: receive a string from terminal (series of frames)
+ * Args: buffer(to receive date into it) -> uint8_t*
+ * Return: None
+ * Example: UART_ReceiveString(frame);
+ * Note: The frame received by this function must end with '\r' otherwise program will stuck inside it (infinte loop)
+ */
 void UART_ReceiveString(uint8_t *receive_buffer);
 
 

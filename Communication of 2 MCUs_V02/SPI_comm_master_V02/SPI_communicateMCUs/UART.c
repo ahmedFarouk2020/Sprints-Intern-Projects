@@ -15,16 +15,19 @@
 
 
 
-void UART_Init(EN_baud_rate BR, EN_stopbit_count SB, EN_parity_mode pm, EN_sync_mode s_mode,
-				EN_data_size size, EN_trig_source trig_mode)
+void UART_Init(EN_stopbit_count SB, EN_parity_mode pm, EN_sync_mode s_mode,
+				EN_data_size size, EN_trig_source trig_mode, EN_Double_Speed double_speed)
 {
-	UCSRA = (1<<1); // when disable this mode, data corruption ocurrs
+	#if double_speed == ENABLE
+		//UCSRA = (1<<1); // when disable this mode, data corruption ocurrs
+		SET_BIT(UCSRA,1);
+	#endif
 	
 	UCSRB = trig_mode ;
 	ENABLE_TRANSMITTER();
 	ENABLE_RECEIVER();
 	
-	UCSRC = (1<<7);
+	SWITCH_TO_UCSRC();
 	UCSRC |= ( SB | pm | s_mode | size );
 	
 	/* First 8 bits from the BAUD_PRESCALE inside UBRRL and last 4 bits in UBRRH*/
@@ -67,26 +70,31 @@ void UART_ReceiveString(uint8_t *receive_buffer)
 
 
 
-void UART_SendInt(uint16_t number);
+void UART_SendInt(uint16_t number)
+{
+	sint8_t* str = {'\0'};
+	itostr(number, str);
+	UART_SendString(str);
+}
 
 
-static void itostr(uint16_t number, sint8_t *str)
+static void itostr(uint16_t number, sint8_t *buffer)
 {
 	uint8_t remainder;
-	sint8_t counter = 0 ;  // 2 3 1   
+	sint8_t counter = 0;
 
 	if(number == 0)
 	{
-		str[0] = 48;
+		buffer[0] = 48;
 		counter = 0 ;
 	}
 	while(number)
 	{
 		remainder = (uint8_t)(number%10);
-		str[counter++] = remainder + 48;
+		buffer[counter++] = remainder + 48;
 		number = number/10;
 	}
-	// reverse array
+
 }
 
 
