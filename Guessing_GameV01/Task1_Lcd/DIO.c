@@ -11,7 +11,7 @@ sint8_t DIO_setPinDirection(uint8_t GPIO, uint8_t pin_number, uint8_t direction)
 	switch (GPIO)
 	{
 		case GPIOA:
-			if (pin_number < 7) 
+			if (pin_number <= 7) 
 			{
 				if (direction <= 1)
 				{
@@ -23,7 +23,7 @@ sint8_t DIO_setPinDirection(uint8_t GPIO, uint8_t pin_number, uint8_t direction)
 		return PIN_NUMBER_OUT_OF_RANGE; 
 		
 		case GPIOB:
-			if (pin_number < 7)
+			if (pin_number <= 7)
 			{
 				if (direction <= 1)
 				{
@@ -35,7 +35,7 @@ sint8_t DIO_setPinDirection(uint8_t GPIO, uint8_t pin_number, uint8_t direction)
 			return PIN_NUMBER_OUT_OF_RANGE; // Error
 		
 		case GPIOC:
-			if (pin_number < 7)
+			if (pin_number <= 7)
 			{
 				if (direction <= 1)
 				{
@@ -47,7 +47,7 @@ sint8_t DIO_setPinDirection(uint8_t GPIO, uint8_t pin_number, uint8_t direction)
 			return PIN_NUMBER_OUT_OF_RANGE; // Error
 		
 		case GPIOD:
-		if (pin_number < 7)
+		if (pin_number <= 7)
 		{
 			if (direction <= 1)
 			{
@@ -70,7 +70,7 @@ sint8_t DIO_setPinValue(uint8_t GPIO, uint8_t pin_number, uint8_t value)
 	switch (GPIO)
 	{
 		case GPIOA:
-		if (pin_number < 7)
+		if (pin_number <= 7)
 		{
 			if (GET_BIT(value, 0) == LOW)
 			{
@@ -86,7 +86,7 @@ sint8_t DIO_setPinValue(uint8_t GPIO, uint8_t pin_number, uint8_t value)
 
 
 		case GPIOB:
-		if (pin_number < 7)
+		if (pin_number <= 7)
 		{
 			if (GET_BIT(value, 0) == LOW)
 			{
@@ -102,7 +102,7 @@ sint8_t DIO_setPinValue(uint8_t GPIO, uint8_t pin_number, uint8_t value)
 
 		
 		case GPIOC:
-		if (pin_number < 7)
+		if (pin_number <= 7)
 		{
 			if (GET_BIT(value, 0) == LOW)
 			{
@@ -118,7 +118,7 @@ sint8_t DIO_setPinValue(uint8_t GPIO, uint8_t pin_number, uint8_t value)
 
 		
 		case GPIOD:
-		if (pin_number < 7)
+		if (pin_number <= 7)
 		{
 			if (GET_BIT(value, 0) == LOW)
 			{
