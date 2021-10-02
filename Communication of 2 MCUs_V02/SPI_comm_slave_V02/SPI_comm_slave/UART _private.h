@@ -22,12 +22,13 @@
 //------ Helping Macros
 #define ENABLE_TRANSMITTER()  SET_BIT(UCSRB,3)
 #define ENABLE_RECEIVER()	  SET_BIT(UCSRB,4)
-#define SWITCH_TO_UCSRC()     SET_BIT(UBRRH,7)
+#define SWITCH_TO_UCSRC()     SET_BIT(UCSRC,7)
 #define SWITCH_TO_UBRRH()     CLR_BIT(UBRRH,7)
 
 //------ Helping Function
 
 static void UART_ReceiveChar(uint8_t *receive_buffer);
+static void itostr(uint16_t number, sint8_t *str);
 
 
 #endif 

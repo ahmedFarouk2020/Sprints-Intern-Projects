@@ -9,8 +9,8 @@
 #ifndef UART_CONFIG_H_
 #define UART_CONFIG_H_
 
-#define USART_BAUDRATE     9600
-#define F_CPU 1000000UL
+#define USART_BAUDRATE		9600
+#define F_CPU				1000000UL
 
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 8UL))) - 1)
 

@@ -38,11 +38,11 @@ void SPI_Init(void)
 void SPI_sendChar(uint8_t character)
 {
 	SPDR = character;
-	while(GET_BIT(SPSR,7) == 0);
+	while(GET_BIT(SPSR,SPI_FLAG) == 0);
 }
 uint8_t SPI_ReceiveChar(void)
 {
-	while(GET_BIT(SPSR,7) == 0);
+	while(GET_BIT(SPSR,SPI_FLAG) == 0);
 	return SPDR;
 }
 void SPI_SendStr(uint8_t* str)
@@ -54,6 +54,9 @@ void SPI_SendStr(uint8_t* str)
 		index++;
 	}
 }
+
+
+
 void SPI_ReceiveStr(uint8_t* buffer)
 {
 	uint8_t index = 0;
@@ -64,4 +67,8 @@ void SPI_ReceiveStr(uint8_t* buffer)
 	} while (buffer[index-1] != '\0');
 	buffer[index-1] = '\0';
 }
-//void SPI_Disable(void);
+
+void SPI_Disable(void)
+{
+	SPCR = SPI_DIS;
+}

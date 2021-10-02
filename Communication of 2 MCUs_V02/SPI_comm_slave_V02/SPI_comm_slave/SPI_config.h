@@ -17,7 +17,7 @@
 
 /* SPI Config (options in "SPI_interface" file) */
 #define SPI_CLK				CLK_DIV128
-#define SPI_MODE			SLaveMode					// MASTER or SLAVE
+#define SPI_MODE			MasterMode					// MASTER or SLAVE
 #define INTERRUPT_STATE		SPI_InterruptDisable       //  INT_ENABLED or INT_DISABLED
 #define BIT_ORDER			MSBFirst				  //   MSB_FIRST  or LSB_FIRST
 #define DOUBLE_SPEED		DoubleSpeedDisable		 //    DS_ENABLED  or DS_DISABLED
